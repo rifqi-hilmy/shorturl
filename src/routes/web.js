@@ -6,7 +6,13 @@ var path = require('path')
 var { cwd }  = process
 
 var pathDB = path.join(cwd(),'src', 'database', 'database.json')
-var db = fs.readFileSync(pathDB, 'utf-8') || '[]'
+var db
+try {
+    db = fs.readFileSync(pathDB, 'utf-8') || '[]'
+} catch (e) {
+    fs.writeFileSync(pathDB, '[]')
+    db = '[]'
+}
 db = JSON.parse(db)
 
 router.get('/', function(req, res, next) {
@@ -33,7 +39,12 @@ router.get('/:key', async function(req, res, next) {
     var { key } = req.params
 
     pathDB = (cwd() + '/src/database/database.json')
-    db = fs.readFileSync(pathDB, 'utf-8') || '[]'
+    try {
+        db = fs.readFileSync(pathDB, 'utf-8') || '[]'
+    } catch (e) {
+        fs.writeFileSync(pathDB, '[]')
+        db = '[]'
+    }
     db = JSON.parse(db)
 
     var data = db.find(v => v.key == key)

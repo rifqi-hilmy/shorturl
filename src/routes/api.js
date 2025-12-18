@@ -9,7 +9,13 @@ var { cwd }  = process
 var pathDB = path.join(cwd(), 'src', 'database', 'database.json')
 var pathContributors = path.join(cwd(), 'src', 'database', 'contributors.json')
 
-var db = fs.readFileSync(pathDB, 'utf-8') || '[]'
+var db
+try {
+    db = fs.readFileSync(pathDB, 'utf-8') || '[]'
+} catch (e) {
+    fs.writeFileSync(pathDB, '[]')
+    db = '[]'
+}
 var contributors = fs.readFileSync(pathContributors, 'utf-8') || '[]'
 db = JSON.parse(db)
 contributors = JSON.parse(contributors)

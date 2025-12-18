@@ -2,6 +2,7 @@ const { createServer } = require('http')
 const apiRouter = require('./routes/api')
 const webRouter = require('./routes/web')
 const express = require('express')
+const createError = require('http-errors')
 const limitter = require('express-rate-limit')
 const path = require('path')
 const cors = require('cors')
@@ -56,4 +57,4 @@ app.use(function(err, req, res, next) {
 
 const server = createServer(app)
 
-module.exports = server
+module.exports = { app, server }
